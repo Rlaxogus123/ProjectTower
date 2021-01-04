@@ -33,11 +33,7 @@ public class GameScene : MonoBehaviour
 
         m_FSM.SetDiceState();
         GameMgr.Ins.SetGameScene(this);
-        for(int i = 0; i < Config.DPLAYER_COUNT; i++)
-        {
-            GameMgr.Ins.m_GameInfo.SetTimer(i, 45.0f);
-            GameMgr.Ins.m_GameInfo.SetActiveTimer(i, true);
-        }
+        GameMgr.Ins.m_GameInfo.SetTimer(5.0f);
         SaveInfo.Ins.LoadFile();
     }
 
@@ -86,7 +82,6 @@ public class GameScene : MonoBehaviour
     }
     void OnEnter_SwapState()
     {
-        GameMgr.Ins.m_GameInfo.SetTimer(GameMgr.Ins.m_nNowTurn, 45.0f);
         m_hudUI.m_SwapDlg.Initialize();
     }
     void OnEnter_ResultState()

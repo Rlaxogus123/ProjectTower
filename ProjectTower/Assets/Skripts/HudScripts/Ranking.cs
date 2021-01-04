@@ -24,7 +24,7 @@ public class Ranking : MonoBehaviour
             if(GameMgr.Ins.m_nNowTurn == i)
             {
                 m_txtLeftTime[i].gameObject.SetActive(true);
-                m_txtLeftTime[i].text = string.Format("{0:0.0}초 남음",GameMgr.Ins.m_GameInfo.m_LeftTime[i]);
+                m_txtLeftTime[i].text = string.Format("{0:0.0}초 남음",GameMgr.Ins.m_GameInfo.m_LeftTime);
             }
         }
     }

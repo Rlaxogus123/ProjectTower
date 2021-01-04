@@ -8,17 +8,32 @@ public class ThrowDlg : MonoBehaviour
     [SerializeField] Button m_btnClose;
     [SerializeField] Image m_ImgGauge;
     [SerializeField] GameObject m_BlackPannel;
+    [SerializeField] Text m_txtNotice;
+
+    [SerializeField] AudioClip[] Audioclips;
+    private AudioSource[] m_AudioSource;
 
     private bool bGauge;
     private float fGaugeFill;
     void Start()
     {
+        for(int i = 0; i < Audioclips.Length; i++)
+        {
+
+        }
         m_btnClose.onClick.AddListener(Close);
     }
     public void Initialize()
     {
-        if (GameMgr.Ins.m_ThrowCount < 1) m_BlackPannel.SetActive(true);
+        m_BlackPannel.SetActive(true);
+
+        if (GameMgr.Ins.m_GameScene.m_FSM.IsSwapState()) m_txtNotice.text = "시간 초과!";
+        else if (GameMgr.Ins.m_nNowTurn != 0) m_txtNotice.text = "당신의 턴이 아닙니다!";
+        else if (GameMgr.Ins.m_ThrowCount < 1) m_txtNotice.text = "주사위를 모두 던지셨습니다!";
         else m_BlackPannel.SetActive(false);
+
+        bGauge = false;
+        fGaugeFill = 0.0f;
         Show();
     }
     public void Show()
@@ -34,7 +49,7 @@ public class ThrowDlg : MonoBehaviour
 
     public void ThrowDown()
     {
-        if (GameMgr.Ins.m_ThrowCount < 1)
+        if (m_BlackPannel.activeSelf)
         {
             Close();
             return;
@@ -46,6 +61,12 @@ public class ThrowDlg : MonoBehaviour
 
     public void ThrowUp()
     {
+        if (m_BlackPannel.activeSelf)
+        {
+            Close();
+            return;
+        }
+
         if (bGauge)
         {
             bGauge = false;
@@ -63,6 +84,13 @@ public class ThrowDlg : MonoBehaviour
 
     void Update()
     {
+        if (GameMgr.Ins.m_GameScene.m_FSM.IsSwapState())
+        {
+            bGauge = false;
+            m_txtNotice.text = "시간 초과!";
+            m_BlackPannel.SetActive(true);
+        }
+
         if (bGauge)
         {
             fGaugeFill += Time.deltaTime*1.67f;

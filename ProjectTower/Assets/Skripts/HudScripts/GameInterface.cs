@@ -9,6 +9,9 @@ public class GameInterface : MonoBehaviour
     [SerializeField] Button m_btnDice;
     [SerializeField] Button m_btnFeedback;
     [SerializeField] Text m_txtLeftTime;
+    [SerializeField] Text m_txtTurnCount;
+
+    public int nTurnCount;
     void Start()
     {
         m_btnFeedback.onClick.AddListener(onClicked_Feedback);
@@ -46,6 +49,13 @@ public class GameInterface : MonoBehaviour
 
     void Update()
     {
-        m_txtLeftTime.text = string.Format("제한시간 : {0:0.0}초", GameMgr.Ins.m_GameInfo.m_LeftTime[0]);
+        if (GameMgr.Ins.m_nNowTurn == 0) m_txtLeftTime.text = string.Format("제한시간 : {0:0.0}초", GameMgr.Ins.m_GameInfo.m_LeftTime);
+        else m_txtLeftTime.text = string.Format("플레이어{0} 차례", GameMgr.Ins.m_nNowTurn + 1);
+
+        if(nTurnCount != GameMgr.Ins.m_GameInfo.m_TurnCount)
+        {
+            nTurnCount = GameMgr.Ins.m_GameInfo.m_TurnCount;
+            m_txtTurnCount.text = string.Format("턴 횟수 : {0} 번", nTurnCount);
+        }
     }
 }
