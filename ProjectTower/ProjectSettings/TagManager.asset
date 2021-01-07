@@ -47,8 +47,14 @@ TagManager:
   - name: Tower
     uniqueID: 806081463
     locked: 0
+  - name: Fog
+    uniqueID: 663184563
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: View
+    uniqueID: 543164627
     locked: 0
   - name: UI
     uniqueID: 4059544107

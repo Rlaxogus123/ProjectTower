@@ -33,7 +33,9 @@ public class GameScene : MonoBehaviour
 
         m_FSM.SetDiceState();
         GameMgr.Ins.SetGameScene(this);
-        GameMgr.Ins.m_GameInfo.SetTimer(5.0f);
+        GameMgr.Ins.m_GameInfo.SetTimer(45.0f);
+        AssetMgr.Inst.Initialize();
+        AssetMgr.Inst.GetAssetFeedback(0);
         SaveInfo.Ins.LoadFile();
     }
 

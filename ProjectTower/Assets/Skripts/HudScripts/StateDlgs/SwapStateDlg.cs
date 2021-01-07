@@ -32,6 +32,14 @@ public class SwapStateDlg : MonoBehaviour
     {
         GameMgr.Ins.m_nNowTurn++;
         GameMgr.Ins.m_nNowTurn %= 4;
+        GameMgr.Ins.m_GameScene.m_hudUI.m_ReadyDlg.CamTargetIndex = GameMgr.Ins.m_nNowTurn;
+
+        if (GameMgr.Ins.m_nNowTurn == 0)
+            GameMgr.Ins.m_bFeedbackCheck = true;
+
+        EntityPlayer kPlayer = GameMgr.Ins.m_GameScene.m_gameUI.m_Player[GameMgr.Ins.m_nNowTurn];
+        if (kPlayer.stat_Attacked > 0) kPlayer.stat_Attacked--; // 기절중이면
+        else GameMgr.Ins.m_ThrowCount = 1;
 
         GameMgr.Ins.m_GameInfo.m_TurnCount++;
         GameMgr.Ins.m_GameInfo.SetTimer(45.0f);
@@ -41,11 +49,11 @@ public class SwapStateDlg : MonoBehaviour
     IEnumerator Enum_Close()
     {
         CG_Panel = this.GetComponentInChildren<CanvasGroup>();
-        fAlpha = 1.5f;
+        fAlpha = 3f;
         while(fAlpha > 0)
         {
             CG_Panel.alpha = fAlpha;
-            fAlpha -= Time.deltaTime;
+            fAlpha -= Time.deltaTime * 3;
             yield return new WaitForSeconds(Time.deltaTime);
         }
         SetSwap();

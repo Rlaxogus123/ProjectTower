@@ -13,6 +13,7 @@ public class MapDlg : MonoBehaviour
     public void Initialize()
     {
         Show();
+        StartCoroutine(Enum_Show());
     }
     public void Show()
     {
@@ -20,7 +21,32 @@ public class MapDlg : MonoBehaviour
     }
     public void Close()
     {
+        if(this.GetComponent<CanvasGroup>().alpha >= 1)
+            StartCoroutine(Enum_Close());
+    }
+    
+    IEnumerator Enum_Show()
+    {
+        CanvasGroup CG = this.GetComponent<CanvasGroup>();
+        CG.alpha = 0;
+        while(CG.alpha < 1)
+        {
+            CG.alpha += Time.deltaTime * 3;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        yield return null;
+    }
+
+    IEnumerator Enum_Close()
+    {
+        CanvasGroup CG = this.GetComponent<CanvasGroup>();
+        while(CG.alpha > 0)
+        {
+            CG.alpha -= Time.deltaTime * 3;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
         this.gameObject.SetActive(false);
+        yield return null;
     }
 
     void Update()

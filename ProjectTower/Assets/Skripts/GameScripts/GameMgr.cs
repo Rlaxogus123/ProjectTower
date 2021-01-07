@@ -19,6 +19,7 @@ public class GameMgr : Singleton<GameMgr>
     public int[] m_PlayerDestiny = new int[Config.DPLAYER_COUNT];
     public int[] m_MoveCount = new int[Config.DPLAYER_COUNT]; // 플레이어가 움직일 거리
     public int m_ThrowCount = 1; // 주사위를 던질 횟수
+    public bool m_bFeedbackCheck; // 피드백 확인했나
 
     // Singleton Datas -
 

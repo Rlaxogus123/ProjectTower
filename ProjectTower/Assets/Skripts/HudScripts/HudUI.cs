@@ -32,7 +32,7 @@ public class HudUI : MonoBehaviour
         float wheelInput = Input.GetAxis("Mouse ScrollWheel");
         if (wheelInput < 0)
         {
-            if(fLerpSize < 9.5)
+            if(fLerpSize < 14.5f)
                fLerpSize += 0.4f;
         }
         if (wheelInput > 0)

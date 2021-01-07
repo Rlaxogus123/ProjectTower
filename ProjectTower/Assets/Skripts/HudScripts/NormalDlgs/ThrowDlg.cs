@@ -10,17 +10,23 @@ public class ThrowDlg : MonoBehaviour
     [SerializeField] GameObject m_BlackPannel;
     [SerializeField] Text m_txtNotice;
 
-    [SerializeField] AudioClip[] Audioclips;
-    private AudioSource[] m_AudioSource;
+    [SerializeField] AudioClip[] Audioclips = new AudioClip[4];
+    private AudioSource[] m_AudioSource = new AudioSource[4];
 
     private bool bGauge;
     private float fGaugeFill;
     void Start()
     {
-        for(int i = 0; i < Audioclips.Length; i++)
+        for(int i = 0; i < m_AudioSource.Length; i++)
         {
-
+            m_AudioSource[i] = gameObject.AddComponent<AudioSource>() as AudioSource;
+            m_AudioSource[i].clip = Audioclips[i];
+            m_AudioSource[i].playOnAwake = false;
+            m_AudioSource[i].loop = false;
+            m_AudioSource[i].volume = GameMgr.Ins.m_GameInfo.SFXAmount;
+            m_AudioSource[i].Stop();
         }
+
         m_btnClose.onClick.AddListener(Close);
     }
     public void Initialize()
@@ -34,17 +40,47 @@ public class ThrowDlg : MonoBehaviour
 
         bGauge = false;
         fGaugeFill = 0.0f;
+        m_ImgGauge.fillAmount = fGaugeFill;
         Show();
+        StartCoroutine(Enum_Show());
     }
+
     public void Show()
     {
         this.gameObject.SetActive(true);
     }
     public void Close()
     {
-        if (GameMgr.Ins.m_MoveCount[GameMgr.Ins.m_nNowTurn] > 0)
-            GameMgr.Ins.m_GameScene.m_FSM.SetMoveState();
+        if (this.GetComponent<CanvasGroup>().alpha >= 1)
+        {
+            if (GameMgr.Ins.m_MoveCount[GameMgr.Ins.m_nNowTurn] > 0)
+                GameMgr.Ins.m_GameScene.m_FSM.SetMoveState();
+            StartCoroutine(Enum_Close());
+        }
+    }
+
+    IEnumerator Enum_Show()
+    {
+        CanvasGroup CG = this.GetComponent<CanvasGroup>();
+        CG.alpha = 0;
+        while (CG.alpha < 1)
+        {
+            CG.alpha += Time.deltaTime * 3;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        yield return null;
+    }
+
+    IEnumerator Enum_Close()
+    {
+        CanvasGroup CG = this.GetComponent<CanvasGroup>();
+        while (CG.alpha > 0)
+        {
+            CG.alpha -= Time.deltaTime * 3;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
         this.gameObject.SetActive(false);
+        yield return null;
     }
 
     public void ThrowDown()

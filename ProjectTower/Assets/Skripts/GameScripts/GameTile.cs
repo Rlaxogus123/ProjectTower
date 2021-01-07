@@ -6,11 +6,30 @@ public class GameTile : MonoBehaviour
 {
     [SerializeField] GameObject m_prefabTile;
     public List<GameObject>[] m_TileList = new List<GameObject>[4];
+
+
+
     void Start()
     {
         for(int i = 0; i <4; i++)
         {
             m_TileList[i] = new List<GameObject>();
+        }
+    }
+
+    public void ViewEnableTile(int _index)
+    {
+        for (int i = 0; i < m_TileList[_index].Count; i++)
+        {
+            m_TileList[_index][i].GetComponent<SpriteRenderer>().sortingLayerName = "View";
+        }
+    }
+
+    public void ViewDisableTile(int _index)
+    {
+        for (int i = 0; i < m_TileList[_index].Count; i++)
+        {
+            m_TileList[_index][i].GetComponent<SpriteRenderer>().sortingLayerName = "Tile";
         }
     }
 
@@ -31,21 +50,21 @@ public class GameTile : MonoBehaviour
             GameObject kTile = Instantiate(m_prefabTile, this.transform);
             switch (i - pointIndex)
             {
-                case 1: fSide = -2; break;
+                case 1: fSide = -2.5f; break;
                 case 2: 
-                    fSide = -4;
+                    fSide = -5f;
                     kTile.GetComponent<EntityTile>().m_bAttackTile = true;
-                    kTile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 0, 1);
                     break;
-                case 3: fSide = -2; break;
+                case 3: fSide = -2.5f; break;
                 case 4:
                     fSide = 0;
                     IsRight = !IsRight;
                     pointIndex = i;
                     break;
             }
+            kTile.GetComponent<EntityTile>().nIndex = i;
             kTile.transform.position = m_prefabTile.transform.position + 
-                new Vector3((100 *_index) + (IsRight ? Mathf.Abs(fSide) : fSide), 0.6f * i, 0);
+                new Vector3((100 *_index) + (IsRight ? Mathf.Abs(fSide) : fSide), 1f * i, 0);
             kTile.SetActive(true);
             m_TileList[_index].Add(kTile);
         }
