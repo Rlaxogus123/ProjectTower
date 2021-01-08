@@ -31,7 +31,7 @@ public class SwapStateDlg : MonoBehaviour
     public void SetSwap()
     {
         GameMgr.Ins.m_nNowTurn++;
-        GameMgr.Ins.m_nNowTurn %= 4;
+        GameMgr.Ins.m_nNowTurn %= Config.DPLAYER_COUNT;
         GameMgr.Ins.m_GameScene.m_hudUI.m_ReadyDlg.CamTargetIndex = GameMgr.Ins.m_nNowTurn;
 
         if (GameMgr.Ins.m_nNowTurn == 0)

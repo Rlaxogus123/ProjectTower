@@ -8,10 +8,25 @@ public class EntityPlayer : MonoBehaviour
     Vector3 m_Target;
     SpriteRenderer m_Sprite;
 
+    GameObject m_Particle;
+
     public int stat_Attacked = 0;
 
     void Start()
     {
+        StartCoroutine(Enum_Effect());
+    }
+
+    IEnumerator Enum_Effect()
+    {
+        while(true)
+        {
+            if(stat_Attacked > 0)
+            {
+
+            }
+            yield return new WaitForSeconds(0.25f);
+        }
     }
 
     public void Initialize(Vector3 target)
@@ -48,5 +63,6 @@ public class EntityPlayer : MonoBehaviour
 
     void Update()
     {
+
     }
 }

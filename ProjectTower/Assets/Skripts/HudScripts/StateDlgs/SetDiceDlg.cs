@@ -22,7 +22,22 @@ public class SetDiceDlg : MonoBehaviour
         int nRandom = Random.Range(0, 4);
         GameMgr.Ins.m_PlayerDestiny[0] = nRandom;
         m_btnDice.GetComponentInChildren<Text>().text = string.Format("인생 계급 {0}등급", nRandom + 1);
-        Invoke("Close", 3.0f);
+        StartCoroutine(Enum_Close());
+    }
+
+    IEnumerator Enum_Close()
+    {
+        yield return new WaitForSeconds(1.0f);
+        CanvasGroup CG = this.GetComponent<CanvasGroup>();
+        CG.alpha = 1;
+        while(CG.alpha > 0)
+        {
+            CG.alpha -= Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        GameMgr.Ins.m_GameScene.m_FSM.SetReadyState();
+        Close();
+        yield return null;
     }
 
     public void Show()
@@ -31,7 +46,6 @@ public class SetDiceDlg : MonoBehaviour
     }
     public void Close()
     {
-        GameMgr.Ins.m_GameScene.m_FSM.SetReadyState();
         this.gameObject.SetActive(false);
     }
 

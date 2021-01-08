@@ -7,6 +7,7 @@ public class EventStateDlg : MonoBehaviour
 {
     [SerializeField] GameObject m_objPlayerSelect;
     [SerializeField] GameObject m_objSelectTile;
+    [SerializeField] GameObject m_particle;
 
     [SerializeField] EntityElement[] m_Elements;
     bool[] possible = new bool[Config.DPLAYER_COUNT];
@@ -36,7 +37,7 @@ public class EventStateDlg : MonoBehaviour
     {
         Show();
 
-        for(int i = 0; i < m_Elements.Length; i++)
+        for(int i = 0; i < Config.DPLAYER_COUNT; i++)
         {
             possible[i] = false;
             m_Elements[i].GetComponent<Button>().interactable = false;
@@ -78,7 +79,7 @@ public class EventStateDlg : MonoBehaviour
             StartCoroutine(Enum_AI());
         }
 
-        nAttack = 2;
+        nAttack = 6;
         bSelect = false;
 
         StartCoroutine(Enum_Show());
@@ -118,6 +119,12 @@ public class EventStateDlg : MonoBehaviour
                 {
                     m_audio[0].Play();
                     GameMgr.Ins.m_GameScene.m_gameUI.m_GameTile.m_TileList[nRandom][targetIndex].GetComponent<EntityTile>().m_bBreakTile = true;
+                    GameObject kObject = Instantiate(m_particle);
+                    kObject.GetComponent<CFX_AutoDestructShuriken>().OnlyDeactivate = false;
+                    kObject.transform.position = new Vector3(GameMgr.Ins.m_GameScene.m_gameUI.m_GameTile.m_TileList[nRandom][targetIndex].transform.position.x,
+                        GameMgr.Ins.m_GameScene.m_gameUI.m_GameTile.m_TileList[nRandom][targetIndex].transform.position.y, 0);
+                    kObject.SetActive(true);
+                    kObject.GetComponent<ParticleSystem>().Play();
                     break;
                 }
                 targetIndex--;
@@ -180,7 +187,12 @@ public class EventStateDlg : MonoBehaviour
                     nAttack--;
                     kTile.m_bBreakTile = true;
                     m_audio[0].Play();
-                    if(nAttack == 0) StartCoroutine(Enum_AttackEnd());
+                    GameObject kObject = Instantiate(m_particle);
+                    kObject.GetComponent<CFX_AutoDestructShuriken>().OnlyDeactivate = false;
+                    kObject.transform.position = new Vector3(kTile.transform.position.x, kTile.transform.position.y, 0);
+                    kObject.SetActive(true);
+                    kObject.GetComponent<ParticleSystem>().Play();
+                    if (nAttack == 0) StartCoroutine(Enum_AttackEnd());
                 }
             }
         }

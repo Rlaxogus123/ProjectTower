@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameUI : MonoBehaviour
 {
+    public GameObject[] m_BG;
     public GameTile m_GameTile;
     public EntityPlayer[] m_Player;
     void Start()
@@ -15,9 +16,9 @@ public class GameUI : MonoBehaviour
     {
         GameMgr.Ins.m_PlayerDestiny[1] = Random.Range(0, 4);
         GameMgr.Ins.m_PlayerDestiny[2] = Random.Range(0, 4);
-        GameMgr.Ins.m_PlayerDestiny[3] = Random.Range(0, 4);
+        //GameMgr.Ins.m_PlayerDestiny[3] = Random.Range(0, 4);
         
-        for (int i = 0; i < m_Player.Length; i++)
+        for (int i = 0; i < Config.DPLAYER_COUNT; i++)
         {
             int SetTile = 50 + (GameMgr.Ins.m_PlayerDestiny[i] * 10);
             m_GameTile.SetTile(i, SetTile);
@@ -32,6 +33,9 @@ public class GameUI : MonoBehaviour
 
     void Update()
     {
-        
+        for(int i = 0; i < m_BG.Length; i++)
+        {
+            m_BG[i].transform.position = new Vector3(Camera.main.transform.position.x, m_BG[i].transform.position.y, m_BG[i].transform.position.z);
+        }
     }
 }

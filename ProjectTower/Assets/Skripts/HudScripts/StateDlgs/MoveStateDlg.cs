@@ -32,7 +32,11 @@ public class MoveStateDlg : MonoBehaviour
 
         // 공격된 타일을 밟았을 때
         if (kTile.m_bBreakTile)
+        {
             m_Player[GameMgr.Ins.m_nNowTurn].stat_Attacked = 1;
+            m_Player[GameMgr.Ins.m_nNowTurn].transform.GetChild(0).gameObject.SetActive(true);
+            m_Player[GameMgr.Ins.m_nNowTurn].transform.GetChild(0).GetComponent<ParticleSystem>().Play();
+        }
         Close();
     }
 

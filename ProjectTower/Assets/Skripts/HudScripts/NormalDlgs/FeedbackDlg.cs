@@ -8,18 +8,10 @@ public class FeedbackDlg : MonoBehaviour
     [SerializeField] Button m_btnClose;
     [SerializeField] Text[] m_txts;
 
-    [SerializeField] AudioClip[] m_audioclip;
-    private AudioSource[] m_audio;
+    
     void Start()
     {
-        for(int i = 0; i < m_audioclip.Length; i++)
-        {
-            m_audio[i] = this.gameObject.AddComponent<AudioSource>();
-            m_audio[i].Stop();
-            m_audio[i].clip = m_audioclip[i];
-            m_audio[i].playOnAwake = false;
-            m_audio[i].loop = false;
-        }
+        
         m_btnClose.onClick.AddListener(Close);
     }
 

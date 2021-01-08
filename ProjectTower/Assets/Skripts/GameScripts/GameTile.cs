@@ -22,6 +22,9 @@ public class GameTile : MonoBehaviour
         for (int i = 0; i < m_TileList[_index].Count; i++)
         {
             m_TileList[_index][i].GetComponent<SpriteRenderer>().sortingLayerName = "View";
+
+            if(GameMgr.Ins.m_GameScene.m_gameUI.m_Player[_index].m_curTile > i)
+                m_TileList[_index][i].transform.GetChild(0).gameObject.SetActive(true);
         }
     }
 
@@ -30,6 +33,7 @@ public class GameTile : MonoBehaviour
         for (int i = 0; i < m_TileList[_index].Count; i++)
         {
             m_TileList[_index][i].GetComponent<SpriteRenderer>().sortingLayerName = "Tile";
+            m_TileList[_index][i].transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 

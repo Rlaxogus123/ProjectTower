@@ -9,12 +9,15 @@ public class ThrowDlg : MonoBehaviour
     [SerializeField] Image m_ImgGauge;
     [SerializeField] GameObject m_BlackPannel;
     [SerializeField] Text m_txtNotice;
+    [SerializeField] Image m_ImgDice;
 
     [SerializeField] AudioClip[] Audioclips = new AudioClip[4];
     private AudioSource[] m_AudioSource = new AudioSource[4];
 
     private bool bGauge;
+    private bool bThrow;
     private float fGaugeFill;
+
     void Start()
     {
         for(int i = 0; i < m_AudioSource.Length; i++)
@@ -39,6 +42,7 @@ public class ThrowDlg : MonoBehaviour
         else m_BlackPannel.SetActive(false);
 
         bGauge = false;
+        bThrow = false;
         fGaugeFill = 0.0f;
         m_ImgGauge.fillAmount = fGaugeFill;
         Show();
@@ -53,9 +57,12 @@ public class ThrowDlg : MonoBehaviour
     {
         if (this.GetComponent<CanvasGroup>().alpha >= 1)
         {
-            if (GameMgr.Ins.m_MoveCount[GameMgr.Ins.m_nNowTurn] > 0)
-                GameMgr.Ins.m_GameScene.m_FSM.SetMoveState();
-            StartCoroutine(Enum_Close());
+            if (!bThrow)
+            {
+                if (GameMgr.Ins.m_MoveCount[GameMgr.Ins.m_nNowTurn] > 0)
+                    GameMgr.Ins.m_GameScene.m_FSM.SetMoveState();
+                StartCoroutine(Enum_Close());
+            }
         }
     }
 
@@ -91,8 +98,13 @@ public class ThrowDlg : MonoBehaviour
             return;
         }
 
-        if (!bGauge)
-            bGauge = true;
+        if (GameMgr.Ins.m_ThrowCount > 0)
+        {
+            if (!bGauge)
+            {
+                bGauge = true;
+            }
+        }
     }
 
     public void ThrowUp()
@@ -106,9 +118,13 @@ public class ThrowDlg : MonoBehaviour
         if (bGauge)
         {
             bGauge = false;
+            bThrow = true;
+
             int Number = (int)(fGaugeFill / 0.3333333f);
             int nResult = (Number * 2) + Random.Range(1, 3);
             Debug.Log(nResult);
+
+            StartCoroutine(Enum_Dice(nResult));
 
             GameMgr.Ins.m_ThrowCount--;
             GameMgr.Ins.m_MoveCount[GameMgr.Ins.m_nNowTurn] = nResult;
@@ -116,6 +132,18 @@ public class ThrowDlg : MonoBehaviour
             fGaugeFill = 0;
             m_ImgGauge.fillAmount = fGaugeFill;
         }
+    }
+
+    IEnumerator Enum_Dice(int Number)
+    {
+        m_ImgDice.gameObject.SetActive(true);
+        for(int i = 0; i < 16; i++)
+        {
+            Debug.Log(string.Format("Sprite/Dice/Dice_{0}_{1:0000}", Number, i));
+            m_ImgDice.sprite = Resources.Load(string.Format("Sprite/Dice/Dice_{0}_{1:0000}", Number, i), typeof(Sprite)) as Sprite;
+            yield return new WaitForSeconds(0.1f);
+        }
+        bThrow = false;
     }
 
     void Update()
